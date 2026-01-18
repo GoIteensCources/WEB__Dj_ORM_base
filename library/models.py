@@ -37,7 +37,7 @@ class Book(models.Model):
 
     @property
     def genres_list(self):
-        return ", ".join(self.genres.values_list("name", flat=True))
+        return ", ".join(g.name for g in self.genres.all())
     
 class Genre(models.Model):
     name = models.CharField(max_length=100)
