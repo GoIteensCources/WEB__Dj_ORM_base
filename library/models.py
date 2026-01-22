@@ -1,7 +1,6 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
-
-from django.db import models
 
 class Author(models.Model):
     first_name = models.CharField(max_length=100)
@@ -10,6 +9,10 @@ class Author(models.Model):
     birth_year = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+    
+    @property
+    def name(self):
         return f"{self.first_name} {self.last_name}"
 
 
@@ -27,18 +30,25 @@ class Book(models.Model):
     publication_year = models.IntegerField()
     pages = models.IntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
+    rating = models.FloatField(validators=[
+            MinValueValidator(0.0),
+            MaxValueValidator(10.0)
+        ], default=0.0)
 
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
-    publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE, related_name='books')
-    genres = models.ManyToManyField('Genre', related_name='books', blank=True)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="books")
+    publisher = models.ForeignKey(
+        Publisher, on_delete=models.CASCADE, related_name="books"
+    )
+    genres = models.ManyToManyField("Genre", related_name="books", blank=True)
 
     def __str__(self):
         return self.title
 
     @property
     def genres_list(self):
-        return ", ".join(g.name for g in self.genres.all())
-    
+        return ", ".join(self.genres.values_list("name", flat=True))
+
+
 class Genre(models.Model):
     name = models.CharField(max_length=100)
 

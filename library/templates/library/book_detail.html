@@ -1,37 +1,33 @@
 {% extends 'base.html' %}
 
-{% block title %}Головна — Libruary{% endblock %}
+{% block title %}{{book.title}}{% endblock %}
 
 {% block content %}
 
 <div class="container py-4">
 
-    <h2 class="text-center mb-4">Library Catalog</h2>
+    <h2 class="text-center mb-4">{{book.title}}</h2>
 
     <div class="row g-3">
 
-        {% for book in books %}
-        <div class="col-12 col-md-6 col-lg-4">
+        <div class="col-12 col-md-8 offset-md-2">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
 
                     <h5 class="card-title mb-1">{{ book.title }}</h5>
-                    <p class="text-muted mb-2">by {{ book.author }}</p>
-
+                    <p class="text-muted mb-2">by {{ book.author }}</p>         
                     <p class="mb-1">
                         <strong>Year:</strong> {{ book.publication_year }} in {{ book.publisher.name }}
                     </p>
-
                     <p class="mb-1">
                         <strong>Genres:</strong> {{ book.genres_list }}
                     </p>
-
-                    <a href="{% url 'library:book_detail' book.id %}" class="stretched-link"></a>
-
+                    <p class="mb-0">
+                        <strong>Price:</strong> {{ book.price }} UAH
+                    </p>    
                 </div>
             </div>
-        </div>
-        {% endfor %}
+        </div>        
 
     </div>
 </div>

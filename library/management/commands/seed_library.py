@@ -93,17 +93,75 @@ class Command(BaseCommand):
         # 4. Generate many Books
         # ------------------------------
         self.stdout.write(f"Generating {book_count} books...")
-        books_to_create = []
+        books_to_create = [] + [
+            Book(
+                title="Harry Potter and the Philosopher's Stone",
+                publication_year=1997,
+                pages=223,
+                price=199.99,
+                author=authors[0],
+                publisher=publishers[0],      
+                rating=10,          
+            ),
+            Book(
+                title="Harry Potter and the Chamber of Secrets",
+                publication_year=1998,
+                pages=251,
+                price=199.99,
+                author=authors[0],
+                publisher=publishers[0],    
+                rating=9.5,          
+            ),
+            Book(
+                title="The Hobbit",
+                publication_year=1937,
+                pages=310,
+                price=149.99,
+                author=authors[1],
+                publisher=publishers[1],    
+                rating=10,            
+            ),
+            Book(
+                title="The Lord of the Rings",
+                publication_year=1954,
+                pages=1178,
+                price=299.99,
+                author=authors[1],
+                publisher=publishers[1],  
+                rating=10,              
+            ),
+            Book(
+                title="1984",
+                publication_year=1949,
+                pages=328,
+                price=129.99,
+                author=authors[4],
+                publisher=publishers[3],    
+                rating=9.8,            
+            ),
+            Book(
+                title="Animal Farm",
+                publication_year=1945,
+                pages=112,
+                price=99.99,
+                author=authors[4],
+                publisher=publishers[3],    
+                rating=9.2,            
+            )
+        ]
 
         for _ in range(book_count):
-            books_to_create.append(Book(
+            books_to_create.append(
+                Book(
                 title=fake.sentence(nb_words=4),
                 publication_year=random.randint(1900, 2025),
                 pages=random.randint(80, 1500),
                 price=round(random.uniform(50, 300), 2),
                 author=random.choice(authors),
                 publisher=random.choice(publishers),
-            ))
+                rating=round(random.uniform(0, 10), 1)
+            )
+            )
 
         # bulk_create — for speed
         books = Book.objects.bulk_create(books_to_create, batch_size=1000)
